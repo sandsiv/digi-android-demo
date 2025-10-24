@@ -198,6 +198,79 @@ This guide helps you diagnose and resolve common issues when integrating the Dig
    )
    ```
 
+### Advanced Settings Issues
+
+#### Issue: "ClassCastException: FrameLayout cannot be cast to TextInputEditText"
+**Symptoms**: App crashes when accessing metadata input fields
+**Causes**: 
+- Incorrect casting of TextInputLayout children
+- TextInputLayout structure has FrameLayout wrapper
+
+**Solutions**:
+1. **Use Correct Casting Chain**
+   ```kotlin
+   // WRONG - Direct casting
+   val nameInput = (nameLayout.getChildAt(0) as TextInputEditText)
+   
+   // CORRECT - Through FrameLayout wrapper
+   val nameInput = (nameLayout.getChildAt(0) as FrameLayout).getChildAt(0) as TextInputEditText
+   ```
+
+2. **Apply to All Methods**
+   ```kotlin
+   // In saveAdvancedSettings, loadAdvancedSettings, getAdvancedSettings
+   val nameInput = (nameLayout.getChildAt(0) as FrameLayout).getChildAt(0) as TextInputEditText
+   val valueInput = (valueLayout.getChildAt(0) as FrameLayout).getChildAt(0) as TextInputEditText
+   ```
+
+#### Issue: "Metadata not saving" / "Settings not persisting"
+**Symptoms**: Advanced settings lost on app restart
+**Causes**: 
+- SharedPreferences not properly configured
+- Save/load methods not called
+
+**Solutions**:
+1. **Initialize SharedPreferences**
+   ```kotlin
+   private lateinit var sharedPreferences: SharedPreferences
+   
+   override fun onCreate(savedInstanceState: Bundle?) {
+       super.onCreate(savedInstanceState)
+       sharedPreferences = getSharedPreferences("survey_settings", Context.MODE_PRIVATE)
+   }
+   ```
+
+2. **Call Save Methods**
+   ```kotlin
+   private fun launchSurvey() {
+       // Save settings before launching
+       saveSettings()
+       saveAdvancedSettings()
+       
+       // Launch survey...
+   }
+   ```
+
+#### Issue: "Button shadows appearing" / "MaterialButton elevation"
+**Symptoms**: Add/delete buttons have unwanted shadows
+**Causes**: 
+- MaterialButton default elevation
+- State list animator effects
+
+**Solutions**:
+1. **Remove Elevation**
+   ```xml
+   <com.google.android.material.button.MaterialButton
+       android:id="@+id/add_metadata_button"
+       app:elevation="0dp"
+       android:stateListAnimator="@null" />
+   ```
+
+2. **Use Transparent Background**
+   ```xml
+   android:backgroundTint="@android:color/transparent"
+   ```
+
 ### UI Issues
 
 #### Issue: "Icons not showing" / "Size selectors not visible"

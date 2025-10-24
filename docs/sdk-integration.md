@@ -109,10 +109,16 @@ private fun launchSurvey() {
         context = this
     )
     
+    // Prepare advanced parameters
+    val advancedParams = HashMap<String, Any>()
+    advancedParams["customerId"] = "user_12345"
+    advancedParams["customField"] = "customValue"
+    
     // Launch survey with configuration
     DigiModule.show(
         surveyId = surveyId,
         language = language,
+        params = advancedParams, // Pass custom parameters
         context = this,
         margins = Margins(0, 0, 0, 0), // Full screen
         cornerRadius = 16,
@@ -194,7 +200,70 @@ if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
 }
 ```
 
-### 4.2 Console Message Handling
+## 🔧 Step 5: Advanced Settings
+
+### 4.1 Customer ID and Metadata
+
+The SDK supports passing custom parameters to surveys:
+
+```kotlin
+// Prepare advanced parameters
+val advancedParams = HashMap<String, Any>()
+
+// Customer ID (required for user identification)
+advancedParams["customerId"] = "user_12345"
+
+// Custom metadata (key-value pairs)
+advancedParams["userType"] = "premium"
+advancedParams["region"] = "US"
+advancedParams["version"] = "2.1.0"
+
+// Launch survey with parameters
+DigiModule.show(
+    surveyId = surveyId,
+    language = language,
+    params = advancedParams, // Pass custom parameters
+    context = this,
+    margins = margins,
+    cornerRadius = 16,
+    onResult = { result -> /* Handle result */ }
+)
+```
+
+### 4.2 Parameter Validation
+
+```kotlin
+// Validate metadata names (alphanumeric and underscore only)
+if (name.matches(Regex("[a-zA-Z0-9_]+"))) {
+    advancedParams[name] = value
+} else {
+    Log.w("Survey", "Invalid metadata name: $name")
+}
+```
+
+### 4.3 Settings Persistence
+
+```kotlin
+// Save settings using SharedPreferences
+private fun saveSettings() {
+    val editor = sharedPreferences.edit()
+    editor.putString("apiUrl", apiUrl)
+    editor.putString("surveyId", surveyId)
+    editor.putString("language", language)
+    editor.putString("customerId", customerId)
+    // Save metadata...
+    editor.apply()
+}
+
+// Load settings on app startup
+private fun loadSettings() {
+    val savedApiUrl = sharedPreferences.getString("apiUrl", "")
+    val savedSurveyId = sharedPreferences.getString("surveyId", "")
+    // Load other settings...
+}
+```
+
+### 4.4 Console Message Handling
 
 ```kotlin
 webView.webChromeClient = object : WebChromeClient() {
@@ -205,7 +274,7 @@ webView.webChromeClient = object : WebChromeClient() {
 }
 ```
 
-## 📱 Step 5: Android Manifest Configuration
+## 📱 Step 6: Android Manifest Configuration
 
 ### 5.1 Required Permissions
 
@@ -228,7 +297,7 @@ webView.webChromeClient = object : WebChromeClient() {
     ... >
 ```
 
-## 🎯 Step 6: Result Handling
+## 🎯 Step 7: Result Handling
 
 ### 6.1 Survey Result Types
 
@@ -279,7 +348,7 @@ onResult = { result ->
 }
 ```
 
-## 🔧 Step 7: Advanced Configuration
+## 🔧 Step 8: Advanced Configuration
 
 ### 7.1 Custom Parameters
 
@@ -309,7 +378,7 @@ DigiModule.show(
 )
 ```
 
-## ✅ Step 8: Testing Your Integration
+## ✅ Step 9: Testing Your Integration
 
 ### 8.1 Test Different Configurations
 

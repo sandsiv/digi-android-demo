@@ -6,7 +6,7 @@ This guide provides practical code examples for integrating the Digi Android SDK
 
 ## 🚀 Basic Integration
 
-### Complete MainActivity Implementation
+### Complete MainActivity Implementation with Advanced Settings
 
 ```kotlin
 // MainActivity.kt - Complete implementation
@@ -133,6 +133,290 @@ class MainActivity : AppCompatActivity() {
     
     private fun updateStatus(message: String) {
         findViewById<TextView>(R.id.status_text).text = message
+    }
+}
+```
+
+## 🔧 Advanced Settings Implementation
+
+### Complete Advanced Settings with Metadata Management
+
+```kotlin
+// MainActivity.kt - Advanced settings implementation
+class MainActivity : AppCompatActivity() {
+    
+    // Advanced settings UI components
+    private lateinit var advancedHeader: LinearLayout
+    private lateinit var advancedContent: LinearLayout
+    private lateinit var advancedArrow: ImageView
+    private lateinit var customerIdInput: TextInputEditText
+    private lateinit var randomCustomerIdButton: MaterialButton
+    private lateinit var metadataContainer: LinearLayout
+    private lateinit var addMetadataButton: MaterialButton
+    
+    // Advanced settings state
+    private var isAdvancedExpanded = false
+    private val metadataRows = mutableListOf<View>()
+    private lateinit var sharedPreferences: SharedPreferences
+    
+    // Constants for SharedPreferences
+    private companion object {
+        const val KEY_API_URL = "api_url"
+        const val KEY_SURVEY_ID = "survey_id"
+        const val KEY_LANGUAGE = "language"
+        const val KEY_SIZE_SELECTION = "size_selection"
+        const val KEY_CUSTOMER_ID = "customer_id"
+        const val KEY_METADATA_COUNT = "metadata_count"
+        const val KEY_METADATA_NAME = "metadata_name"
+        const val KEY_METADATA_VALUE = "metadata_value"
+    }
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("survey_settings", Context.MODE_PRIVATE)
+        
+        initializeViews()
+        setupClickListeners()
+        loadSavedSettings()
+    }
+    
+    private fun initializeViews() {
+        // Basic views
+        apiUrlInput = findViewById(R.id.api_url_input)
+        surveyIdInput = findViewById(R.id.survey_id_input)
+        languageInput = findViewById(R.id.language_input)
+        launchButton = findViewById(R.id.launch_survey_button)
+        sizeRadioGroup = findViewById(R.id.size_radio_group)
+        
+        // Advanced settings views
+        advancedHeader = findViewById(R.id.advanced_header)
+        advancedContent = findViewById(R.id.advanced_content)
+        advancedArrow = findViewById(R.id.advanced_arrow)
+        customerIdInput = findViewById(R.id.customer_id_input)
+        randomCustomerIdButton = findViewById(R.id.random_customer_id_button)
+        metadataContainer = findViewById(R.id.metadata_container)
+        addMetadataButton = findViewById(R.id.add_metadata_button)
+    }
+    
+    private fun setupClickListeners() {
+        launchButton.setOnClickListener { launchSurvey() }
+        advancedHeader.setOnClickListener { toggleAdvancedSettings() }
+        randomCustomerIdButton.setOnClickListener { generateRandomCustomerId() }
+        addMetadataButton.setOnClickListener { addMetadataRow() }
+    }
+    
+    private fun toggleAdvancedSettings() {
+        isAdvancedExpanded = !isAdvancedExpanded
+        
+        if (isAdvancedExpanded) {
+            advancedContent.visibility = View.VISIBLE
+            advancedArrow.rotation = 180f
+        } else {
+            advancedContent.visibility = View.GONE
+            advancedArrow.rotation = 0f
+        }
+    }
+    
+    private fun generateRandomCustomerId() {
+        val randomId = "sdk_demo_${(100000000000..999999999999).random()}"
+        customerIdInput.setText(randomId)
+    }
+    
+    private fun addMetadataRow() {
+        if (metadataRows.size >= 5) {
+            showToast("Maximum 5 metadata pairs allowed")
+            return
+        }
+        
+        val rowLayout = createMetadataRow()
+        metadataContainer.addView(rowLayout)
+        metadataRows.add(rowLayout)
+        
+        android.util.Log.d("SurveyTest", "Added metadata row. Total: ${metadataRows.size}")
+    }
+    
+    private fun createMetadataRow(): LinearLayout {
+        val rowLayout = LinearLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(0, 8, 0, 8)
+        }
+        
+        // Name field
+        val nameLayout = TextInputLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            hint = "Name"
+            setPadding(0, 0, 2, 0)
+        }
+        
+        val nameInput = TextInputEditText(this).apply {
+            id = View.generateViewId()
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            inputType = android.text.InputType.TYPE_CLASS_TEXT
+            hint = "Name"
+        }
+        
+        nameLayout.addView(nameInput)
+        
+        // Disable floating label behavior AFTER adding the EditText
+        nameLayout.isHintEnabled = false
+        nameLayout.boxStrokeWidth = 0
+        nameLayout.boxStrokeWidthFocused = 0
+        
+        // Value field
+        val valueLayout = TextInputLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            hint = "Value"
+            setPadding(0, 0, 2, 0)
+        }
+        
+        val valueInput = TextInputEditText(this).apply {
+            id = View.generateViewId()
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            inputType = android.text.InputType.TYPE_CLASS_TEXT
+            hint = "Value"
+        }
+        
+        valueLayout.addView(valueInput)
+        
+        // Disable floating label behavior AFTER adding the EditText
+        valueLayout.isHintEnabled = false
+        valueLayout.boxStrokeWidth = 0
+        valueLayout.boxStrokeWidthFocused = 0
+        
+        // Remove button - MaterialButton with proper sizing and positioning
+        val removeButton = MaterialButton(this).apply {
+            layoutParams = LinearLayout.LayoutParams(64, 64).apply {
+                gravity = android.view.Gravity.CENTER_VERTICAL
+                topMargin = 8  // Move down to center with input fields
+            }
+            backgroundTintList = android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#F44336"))
+            cornerRadius = 32  // Half of width/height for perfect circle
+            setIconResource(android.R.drawable.ic_delete)
+            iconSize = 28
+            iconTint = android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE)
+            setOnClickListener {
+                removeMetadataRow(rowLayout)
+            }
+        }
+        
+        rowLayout.addView(nameLayout)
+        rowLayout.addView(valueLayout)
+        rowLayout.addView(removeButton)
+        
+        return rowLayout
+    }
+    
+    private fun removeMetadataRow(rowLayout: LinearLayout) {
+        metadataContainer.removeView(rowLayout)
+        metadataRows.remove(rowLayout)
+        android.util.Log.d("SurveyTest", "Removed metadata row. Total: ${metadataRows.size}")
+    }
+    
+    private fun getAdvancedSettings(): HashMap<String, Any> {
+        val params = HashMap<String, Any>()
+        
+        // Add customer ID if provided
+        val customerId = customerIdInput.text.toString().trim()
+        if (customerId.isNotEmpty()) {
+            params["customerId"] = customerId
+        }
+        
+        // Add metadata
+        for (rowView in metadataRows) {
+            val nameLayout = (rowView as LinearLayout).getChildAt(0) as TextInputLayout
+            val valueLayout = rowView.getChildAt(1) as TextInputLayout
+            
+            val nameInput = (nameLayout.getChildAt(0) as android.widget.FrameLayout).getChildAt(0) as TextInputEditText
+            val valueInput = (valueLayout.getChildAt(0) as android.widget.FrameLayout).getChildAt(0) as TextInputEditText
+            
+            val name = nameInput.text.toString().trim()
+            val value = valueInput.text.toString().trim()
+            
+            if (name.isNotEmpty() && value.isNotEmpty()) {
+                // Validate name (no spaces, no special characters)
+                if (name.matches(Regex("[a-zA-Z0-9_]+"))) {
+                    params[name] = value
+                } else {
+                    showToast("Invalid metadata name: $name (use only letters, numbers, underscore)")
+                }
+            }
+        }
+        
+        return params
+    }
+    
+    private fun saveAdvancedSettings() {
+        val editor = sharedPreferences.edit()
+        
+        // Save customer ID
+        editor.putString(KEY_CUSTOMER_ID, customerIdInput.text.toString())
+        
+        // Save metadata
+        editor.putInt(KEY_METADATA_COUNT, metadataRows.size)
+        
+        for (i in metadataRows.indices) {
+            val rowView = metadataRows[i]
+            val nameLayout = (rowView as LinearLayout).getChildAt(0) as TextInputLayout
+            val valueLayout = rowView.getChildAt(1) as TextInputLayout
+            
+            val nameInput = (nameLayout.getChildAt(0) as android.widget.FrameLayout).getChildAt(0) as TextInputEditText
+            val valueInput = (valueLayout.getChildAt(0) as android.widget.FrameLayout).getChildAt(0) as TextInputEditText
+            
+            val nameText = nameInput.text.toString().trim()
+            val valueText = valueInput.text.toString().trim()
+            
+            editor.putString("${KEY_METADATA_NAME}$i", nameText)
+            editor.putString("${KEY_METADATA_VALUE}$i", valueText)
+        }
+        
+        editor.apply()
+        android.util.Log.d("SurveyTest", "Advanced settings saved")
+    }
+    
+    private fun loadAdvancedSettings() {
+        // Load customer ID
+        val savedCustomerId = sharedPreferences.getString(KEY_CUSTOMER_ID, "")
+        customerIdInput.setText(savedCustomerId)
+        
+        // Load metadata
+        val metadataCount = sharedPreferences.getInt(KEY_METADATA_COUNT, 0)
+        
+        if (metadataCount > 0) {
+            // Load saved metadata rows
+            for (i in 0 until metadataCount) {
+                val name = sharedPreferences.getString("${KEY_METADATA_NAME}$i", "")
+                val value = sharedPreferences.getString("${KEY_METADATA_VALUE}$i", "")
+                
+                if (name?.isNotEmpty() == true) {
+                    addMetadataRow()
+                    val rowView = metadataRows.last()
+                    val nameLayout = (rowView as LinearLayout).getChildAt(0) as TextInputLayout
+                    val valueLayout = rowView.getChildAt(1) as TextInputLayout
+                    
+                    val nameInput = (nameLayout.getChildAt(0) as android.widget.FrameLayout).getChildAt(0) as TextInputEditText
+                    val valueInput = (valueLayout.getChildAt(0) as android.widget.FrameLayout).getChildAt(0) as TextInputEditText
+                    
+                    nameInput.setText(name)
+                    valueInput.setText(value)
+                }
+            }
+        } else {
+            // Start with one empty metadata row by default
+            addMetadataRow()
+        }
     }
 }
 ```

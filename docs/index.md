@@ -11,8 +11,10 @@ This demo serves as both a **testing tool** for SDK functionality and a **refere
 ## 📱 Features
 
 - **Survey Configuration**: Dynamic API URL, Survey ID, and Language settings
-- **Size Customization**: Visual icon-based selectors for survey positioning
+- **Size Customization**: Visual icon-based selectors for survey positioning (Full Screen, Middle 1/3, Bottom 1/3)
+- **Advanced Settings**: Customer ID and custom metadata management
 - **Real-time Testing**: Live survey launching with immediate feedback
+- **Settings Persistence**: Automatic saving and restoration of all configuration
 - **Debug Logging**: Comprehensive logging for troubleshooting
 - **Modern UI**: Material Design with intuitive icon-based controls
 
@@ -72,6 +74,12 @@ This demo serves as both a **testing tool** for SDK functionality and a **refere
 - **API URL**: Dynamic script endpoint configuration
 - **Survey ID**: Numeric survey identifier
 - **Language**: Survey language code (e.g., "en", "es")
+
+### Advanced Settings
+- **Customer ID**: Custom identifier for survey participants
+- **Metadata Management**: Dynamic key-value pairs for survey context
+- **Random ID Generation**: Automatic customer ID generation with "sdk_demo_" prefix
+- **Settings Persistence**: All configuration automatically saved and restored
 
 ## 🔍 Debug Features
 

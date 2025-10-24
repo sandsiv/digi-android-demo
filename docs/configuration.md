@@ -122,26 +122,81 @@ private fun calculateMargins(): Margins {
 
 ## 🔧 Advanced Configuration
 
-### Custom Parameters
+### Customer ID and Metadata Management
 
-Pass additional data to surveys:
+The SDK supports comprehensive parameter management for surveys:
 
 ```kotlin
-val customParams = hashMapOf(
-    "customerId" to "12345",
-    "sessionId" to "abc123",
-    "userType" to "premium",
-    "metadata" to "custom_data",
-    "timestamp" to System.currentTimeMillis()
-)
+// Prepare advanced parameters
+val advancedParams = HashMap<String, Any>()
 
+// Customer ID (required for user identification)
+advancedParams["customerId"] = "user_12345"
+
+// Custom metadata (key-value pairs)
+advancedParams["userType"] = "premium"
+advancedParams["region"] = "US"
+advancedParams["version"] = "2.1.0"
+advancedParams["sessionId"] = "abc123"
+
+// Launch survey with parameters
 DigiModule.show(
     surveyId = 162,
     language = "en",
-    params = customParams,
+    params = advancedParams,
     context = this,
     onResult = { result -> ... }
 )
+```
+
+### Parameter Validation
+
+```kotlin
+// Validate metadata names (alphanumeric and underscore only)
+private fun validateMetadataName(name: String): Boolean {
+    return name.matches(Regex("[a-zA-Z0-9_]+"))
+}
+
+// Example usage
+if (validateMetadataName(metadataName)) {
+    advancedParams[metadataName] = metadataValue
+} else {
+    Log.w("Survey", "Invalid metadata name: $metadataName")
+}
+```
+
+### Settings Persistence
+
+```kotlin
+// Save all settings using SharedPreferences
+private fun saveAllSettings() {
+    val editor = sharedPreferences.edit()
+    
+    // Basic settings
+    editor.putString("apiUrl", apiUrl)
+    editor.putString("surveyId", surveyId)
+    editor.putString("language", language)
+    editor.putString("sizeSelection", sizeSelection.toString())
+    
+    // Advanced settings
+    editor.putString("customerId", customerId)
+    editor.putInt("metadataCount", metadataRows.size)
+    
+    // Save metadata
+    for (i in metadataRows.indices) {
+        val rowView = metadataRows[i]
+        val nameLayout = (rowView as LinearLayout).getChildAt(0) as TextInputLayout
+        val valueLayout = rowView.getChildAt(1) as TextInputLayout
+        
+        val nameInput = (nameLayout.getChildAt(0) as FrameLayout).getChildAt(0) as TextInputEditText
+        val valueInput = (valueLayout.getChildAt(0) as FrameLayout).getChildAt(0) as TextInputEditText
+        
+        editor.putString("metadata_name_$i", nameInput.text.toString())
+        editor.putString("metadata_value_$i", valueInput.text.toString())
+    }
+    
+    editor.apply()
+}
 ```
 
 ### Dynamic Configuration
