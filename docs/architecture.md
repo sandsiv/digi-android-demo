@@ -466,3 +466,4 @@ test/
 ---
 
 *This architecture overview provides a comprehensive understanding of the demo app's structure and design patterns. Use it as a reference for implementing your own SDK integration.*
+

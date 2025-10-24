@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="112"
+    android:viewportHeight="59">
+    
+    <!-- Background circle -->
+    <path
+        android:fillColor="#FF6200EE"
+        android:pathData="M54,54m-54,0a54,54 0,1 1,108 0a54,54 0,1 1,-108 0" />
+    
+    <!-- Sandsiv Logo - Main geometric shape (scaled and centered) -->
+    <path
+        android:fillColor="#231F20"
+        android:pathData="M54,20 L75,20 L75,35 L88,35 L88,50 L75,50 L75,65 L54,65 L54,50 L41,50 L54,20 Z" />
+    
+    <!-- Sandsiv Logo - Curved element (scaled and centered) -->
+    <path
+        android:fillColor="#BF2026"
+        android:pathData="M35,40 C35,32 40,28 48,28 C56,28 61,32 61,40 C61,48 56,52 48,52 C40,52 35,48 35,40 Z" />
+    
+    <!-- SDK Demo text background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,70 L88,70 L88,85 L20,85 Z" />
+    
+    <!-- Text "SDK Demo" representation -->
+    <path
+        android:fillColor="#AA56FF"
+        android:pathData="M25,72 L30,72 L30,78 L25,78 Z" />
+    <path
+        android:fillColor="#AA56FF"
+        android:pathData="M35,72 L40,72 L40,78 L35,78 Z" />
+    <path
+        android:fillColor="#AA56FF"
+        android:pathData="M45,72 L50,72 L50,78 L45,78 Z" />
+    <path
+        android:fillColor="#AA56FF"
+        android:pathData="M55,72 L60,72 L60,78 L55,78 Z" />
+    <path
+        android:fillColor="#AA56FF"
+        android:pathData="M65,72 L70,72 L70,78 L65,78 Z" />
+    <path
+        android:fillColor="#AA56FF"
+        android:pathData="M75,72 L80,72 L80,78 L75,78 Z" />
+</vector>

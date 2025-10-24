@@ -11,19 +11,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Header -->
-        <TextView
-            android:id="@+id/header_title"
+        <!-- App Title with Background -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/title_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Digi SDK Demo"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:cardBackgroundColor="#F5F5F5"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Sandsiv mobile survey SDK demo"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="12dp"
+                android:textColor="#6200EE" />
+
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Configuration Card -->
         <com.google.android.material.card.MaterialCardView
@@ -33,7 +44,7 @@
             android:layout_marginTop="8dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
-            app:layout_constraintTop_toBottomOf="@id/header_title"
+            app:layout_constraintTop_toBottomOf="@id/title_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -43,13 +54,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Configure Your Survey"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
 
                 <!-- API URL Field -->
                 <com.google.android.material.textfield.TextInputLayout

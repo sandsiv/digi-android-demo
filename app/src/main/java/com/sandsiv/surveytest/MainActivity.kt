@@ -1,5 +1,6 @@
 package com.sandsiv.surveytest
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.widget.RadioButton
@@ -17,12 +18,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var languageInput: TextInputEditText
     private lateinit var launchButton: MaterialButton
     private lateinit var sizeRadioGroup: android.widget.RadioGroup
+    private lateinit var sharedPreferences: SharedPreferences
+    
+    companion object {
+        private const val PREFS_NAME = "survey_settings"
+        private const val KEY_API_URL = "api_url"
+        private const val KEY_SURVEY_ID = "survey_id"
+        private const val KEY_LANGUAGE = "language"
+        private const val KEY_SIZE_SELECTION = "size_selection"
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        
         initializeViews()
+        loadSavedSettings()
         setupClickListeners()
     }
     
@@ -38,6 +52,40 @@ class MainActivity : AppCompatActivity() {
         launchButton.setOnClickListener { 
             launchSurvey() 
         }
+    }
+    
+    private fun loadSavedSettings() {
+        // Load saved API URL
+        val savedApiUrl = sharedPreferences.getString(KEY_API_URL, "https://genie-survey.sandsiv.com/digi_runner.js")
+        apiUrlInput.setText(savedApiUrl)
+        
+        // Load saved Survey ID
+        val savedSurveyId = sharedPreferences.getString(KEY_SURVEY_ID, "162")
+        surveyIdInput.setText(savedSurveyId)
+        
+        // Load saved Language
+        val savedLanguage = sharedPreferences.getString(KEY_LANGUAGE, "en")
+        languageInput.setText(savedLanguage)
+        
+        // Load saved size selection
+        val savedSizeSelection = sharedPreferences.getInt(KEY_SIZE_SELECTION, R.id.size_full_screen)
+        sizeRadioGroup.check(savedSizeSelection)
+        
+        android.util.Log.d("SurveyTest", "Loaded saved settings: API=$savedApiUrl, Survey=$savedSurveyId, Lang=$savedLanguage, Size=$savedSizeSelection")
+    }
+    
+    private fun saveSettings() {
+        val editor = sharedPreferences.edit()
+        
+        // Save current values
+        editor.putString(KEY_API_URL, apiUrlInput.text.toString().trim())
+        editor.putString(KEY_SURVEY_ID, surveyIdInput.text.toString().trim())
+        editor.putString(KEY_LANGUAGE, languageInput.text.toString().trim())
+        editor.putInt(KEY_SIZE_SELECTION, sizeRadioGroup.checkedRadioButtonId)
+        
+        editor.apply()
+        
+        android.util.Log.d("SurveyTest", "Settings saved successfully")
     }
 
     private fun launchSurvey() {
@@ -67,6 +115,9 @@ class MainActivity : AppCompatActivity() {
             showError("Please enter Language")
             return
         }
+        
+        // Save settings before launching survey
+        saveSettings()
         
         // Update status
         updateStatus("Initializing survey...")

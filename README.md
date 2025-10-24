@@ -162,3 +162,4 @@ This project is part of the Digi SDK ecosystem. See the main SDK repository for 
 ---
 
 *This demo app serves as both a testing tool and a reference implementation for integrating the Digi Android SDK into your applications.*
+
