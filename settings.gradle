@@ -1,0 +1,25 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://europe-maven.pkg.dev/sandsiv-infrastructure/digi-module"
+            credentials {
+                username = "oauth2accesstoken"
+                password = System.getenv("GOOGLE_ACCESS_TOKEN") ?: "YOUR_ACCESS_TOKEN_HERE"
+            }
+        }
+    }
+}
+
+rootProject.name = "digi-android-demo"
+include ':app'

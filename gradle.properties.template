@@ -1,0 +1,9 @@
+# Gradle properties template
+# Copy this file to gradle.properties and fill in your values
+
+# Google Cloud Access Token for Artifact Registry
+# Get your token with: gcloud auth application-default print-access-token
+GOOGLE_ACCESS_TOKEN=your_actual_token_here
+
+# Alternative: Use environment variable
+# GOOGLE_ACCESS_TOKEN=${GOOGLE_ACCESS_TOKEN}

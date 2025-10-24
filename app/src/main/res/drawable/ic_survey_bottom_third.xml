@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Outline of the screen -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#000000"
+        android:strokeWidth="1"
+        android:pathData="M3,3h18v18H3z" />
+    <!-- Bottom third filled -->
+    <path
+        android:fillColor="#4285F4"
+        android:pathData="M3,16h18v5H3z" />
+</vector>
