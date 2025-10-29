@@ -245,15 +245,15 @@ class MainActivity : AppCompatActivity() {
             R.id.size_middle_third -> {
                 // Center the survey in the middle third of the screen
                 // Equal top and bottom margins to center the survey
-                val marginDp = (screenHeightDp * 0.33).toInt()
-                android.util.Log.d("SurveyTest", "Middle 1/3 margins: top=${marginDp}dp, bottom=${marginDp}dp")
+                val marginDp = (screenHeightDp * 0.25).toInt()
+                android.util.Log.d("SurveyTest", "Middle 50% margins: top=${marginDp}dp, bottom=${marginDp}dp")
                 Margins(marginDp, marginDp, 0, 0)  // top, bottom, start, end
             }
             R.id.size_bottom_third -> {
                 // Position survey in bottom third
                 // Large top margin to push survey to bottom, no bottom margin
-                val topMarginDp = (screenHeightDp * 0.67).toInt()
-                android.util.Log.d("SurveyTest", "Bottom 1/3 margins: top=${topMarginDp}dp")
+                val topMarginDp = (screenHeightDp * 0.5).toInt()
+                android.util.Log.d("SurveyTest", "Bottom 50% margins: top=${topMarginDp}dp")
                 Margins(topMarginDp, 0, 0, 0)  // top, bottom, start, end
             }
             else -> {

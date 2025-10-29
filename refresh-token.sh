@@ -26,6 +26,13 @@ if [ $? -eq 0 ] && [ ! -z "$TOKEN" ]; then
     # Also set environment variable for current session
     export GOOGLE_ACCESS_TOKEN="$TOKEN"
     echo "✅ Token set for current session"
+    echo ""
+    echo "📋 IMPORTANT: For other developers, they need to:"
+    echo "   1. Run: gcloud auth application-default login"
+    echo "   2. Run: ./refresh-token.sh"
+    echo "   3. Run: export GOOGLE_ACCESS_TOKEN=\$(gcloud auth application-default print-access-token)"
+    echo "   4. Then build: ./gradlew assembleDebug"
+    echo ""
     echo "🎉 Token refresh completed successfully!"
 else
     echo "❌ Failed to get access token. Please run:"
