@@ -36,7 +36,7 @@ This guide helps you diagnose and resolve common issues when integrating the Dig
 3. **Check Network Connectivity**
    ```bash
    curl -H "Authorization: Bearer YOUR_TOKEN" \
-        "https://europe-maven.pkg.dev/sandsiv-infrastructure/digi-module/com/sandsiv/digi/1.0.21/digi-1.0.21.pom"
+        "https://europe-maven.pkg.dev/sandsiv-infrastructure/digi-module/com/sandsiv/digi/1.0.5/digi-1.0.5.pom"
    ```
 
 #### Issue: "Plugin with id 'dagger.hilt.android.plugin' not found"
@@ -501,7 +501,7 @@ adb shell ping genie-survey.sandsiv.com
 **1. Use Local AAR**
 ```gradle
 // If artifact registry fails, use local AAR
-implementation files('libs/digi-1.0.21.aar')
+implementation files('libs/digi-1.0.5.aar')
 ```
 
 **2. Disable Proguard**

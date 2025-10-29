@@ -435,19 +435,17 @@ data class SurveyConfiguration(
 **1. SDK Version Management**
 ```gradle
 // Use specific versions, not ranges
-implementation "com.sandsiv:digi:1.0.21"
+implementation "com.sandsiv:digi:1.0.5"
 
 // Document version changes
-// v1.0.21 - Added corner radius support
-// v1.0.20 - Fixed margin calculation
-// v1.0.19 - Initial release
+// v1.0.5 - Current stable version
 ```
 
 **2. Dependency Updates**
 ```kotlin
 // Regular dependency updates
 dependencies {
-    implementation "com.sandsiv:digi:1.0.21"
+    implementation "com.sandsiv:digi:1.0.5"
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
     implementation "androidx.core:core-ktx:1.8.0"
 }

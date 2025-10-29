@@ -944,7 +944,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     
     // Digi SDK
-    implementation "com.sandsiv:digi:1.0.21"
+    implementation "com.sandsiv:digi:1.0.5"
     
     // OkHttp dependencies
     implementation "com.squareup.okhttp3:okhttp:4.12.0"

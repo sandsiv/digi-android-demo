@@ -43,7 +43,7 @@ Add the SDK dependency to your app's `build.gradle`:
 ```gradle
 dependencies {
     // Digi SDK
-    implementation "com.sandsiv:digi:1.0.21"
+    implementation "com.sandsiv:digi:1.0.5"
     
     // Required OkHttp dependencies
     implementation "com.squareup.okhttp3:okhttp:4.12.0"
